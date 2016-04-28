@@ -2,26 +2,32 @@
 function Get-MD4{
     PARAM(
         [String]$String,
+        [Byte[]]$bArray,
         [Switch]$UpperCase
     )
     
     # Author: LarrySong@outlook.com
     # Reference: https://tools.ietf.org/html/rfc1320
     # MD4('abc'): a448017aaf21d8525fc10ae87aa6729d
-
+    if($String)
+    {
+        $Array = [byte[]]@($String.ToCharArray() | %{[int]$_})
+    }
+    if($bArray)
+    {
+        $Array = $bArray
+    }
     # padding 100000*** to length 448, last (64 bits / 8) 8 bytes fill with original length
     # at least one (512 bits / 8) 64 bytes array
-    $M = New-Object Byte[] (([math]::Floor($String.Length/64) + 1) * 64)
-    # convert original string to byte array
-    $strBytes = [byte[]]@($String.ToCharArray() | %{[int]$_})
+    $M = New-Object Byte[] (([math]::Floor($Array.Count/64) + 1) * 64)
     # copy original byte array, start from index 0
-    $strBytes.CopyTo($M, 0)
+    $Array.CopyTo($M, 0)
     # padding bits 1000 0000
-    $M[$String.Length] = 0x80
+    $M[$Array.Count] = 0x80
     # padding bits 0000 0000 to fill length (448 bits /8) 56 bytes
     # Default value is 0 when creating a new byte array, so, no action
     # padding message length to the last 64 bits
-    @([BitConverter]::GetBytes($String.Length * 8)).CopyTo($M, $M.Count - 8)
+    @([BitConverter]::GetBytes($Array.Count * 8)).CopyTo($M, $M.Count - 8)
 
     # message digest buffer (A,B,C,D)
     $A = [Convert]::ToUInt32('0x67452301', 16)
