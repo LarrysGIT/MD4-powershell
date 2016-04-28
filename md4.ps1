@@ -6,7 +6,7 @@ function Get-MD4{
         [Switch]$UpperCase
     )
     
-    # Author: LarrySong@outlook.com
+    # Author: Larry.Song@outlook.com
     # Reference: https://tools.ietf.org/html/rfc1320
     # MD4('abc'): a448017aaf21d8525fc10ae87aa6729d
     $Array = [byte[]]@()
