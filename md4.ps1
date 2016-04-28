@@ -9,6 +9,7 @@ function Get-MD4{
     # Author: LarrySong@outlook.com
     # Reference: https://tools.ietf.org/html/rfc1320
     # MD4('abc'): a448017aaf21d8525fc10ae87aa6729d
+    $Array = [byte[]]@()
     if($String)
     {
         $Array = [byte[]]@($String.ToCharArray() | %{[int]$_})
